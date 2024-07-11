@@ -1,0 +1,54 @@
+baseURL = 'https://ruipedro16.github.io/'
+languageCode = 'en-us'
+title = 'Rui Fernandes'
+theme = 'typo'
+
+[params]
+
+# Appearance settings
+theme = 'auto'
+colorPalette = 'default'
+hideHeader = false
+
+homeIntroTitle = 'ABC'
+
+homeIntroContent = """
+ABC
+"""
+
+# Collection to display on home
+# homeCollectionTitle = 'Posts'
+# homeCollection = 'posts'
+
+# Lists parameters
+paginationSize = 100
+listSummaries = true
+listDateFormat = '02 Jan 2006'
+
+# Breadcrumbs
+breadcrumbs = true
+
+[[params.social]]
+name = "github"
+url = "https://github.com/ruipedro16"
+
+[[params.social]]
+name = "linkedin"
+url = "https://www.linkedin.com/in/user/ruipedro16"
+
+[[params.menu]]
+name = "home"
+url = "/"
+
+[[params.menu]]
+name = "posts"
+url = "/posts"
+
+[[params.menu]]
+name = "about"
+url = "/about"
+
+# Syntax highligth on code blocks
+[markup]
+[markup.highlight]
+style = 'bw'
