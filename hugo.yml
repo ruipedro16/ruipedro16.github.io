@@ -1,0 +1,24 @@
+baseURL: 'https://example.org/'
+languageCode: 'en-us'
+title: 'Rui Fernandes'
+
+theme: ["PaperMod"]
+
+
+params:
+  ShowReadingTime: true
+  ShowShareButtons: false
+  buildDrafts: false
+  buildFuture: false
+  defaultTheme: dark
+  disableThemeToggle: true
+
+
+  homeInfoParams:
+    Title: 
+    Content:       
+  # socialIcons:
+  #   - name: github
+  #     url: "https://github.com/ruipedro16/"
+  #   - name: linkedin
+  #     url: "https://www.linkedin.com/in/ruipedro16/"
