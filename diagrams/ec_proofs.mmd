@@ -1,0 +1,8 @@
+flowchart TB
+  JasminSource["Jasmin Source Code"]
+  EasyCryptModel("EasyCrypt Model")
+  EasyCryptSpec["EasyCrypt Specification"]
+  x86Assembly("x86_64 Assembly")
+JasminSource --> |"extracts to"| EasyCryptModel 
+JasminSource --> |"compiles to"| x86Assembly
+EasyCryptSpec <--> |"equivalence proof"| EasyCryptModel
