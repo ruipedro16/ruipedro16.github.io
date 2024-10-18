@@ -98,22 +98,24 @@ This can be used with the metavariables `pre` and `post`.
 
 <!-- Meter aqui um exemplo do MLKEM -->
 
-### `fail`
+### `try` & `fail`
 
-`fail` is a used to assert that tactic that is supposed to fail does indeed fail.
-EasyCrypt's `fail` does the same thing as Coq's `Fail`.
 
-**Example**
+`try` attempts to apply a given tactic, but does not fail even if the tactic does.
+`fail`, on the other hand, is used to assert that tactic that is supposed to fail does indeed fail.
+
+- `try <tactic>.` always succeeds, with tactics other than `smt`. 
+- `smt` failures are not caught by `try`, meaning that `try smt(...).` fails if the call to `smt` fails.
+- `fail <tactic>.` succeeds if `<tactic>` fails, and fails otherwise.
+
+**Examples:**
 
 ```
-lemma foo (n : int) : 
-  n + 1 = n.
-proof.
-fail smt().
+lemma foo (n : int) :  n + 1 = n.
 ```
 
-This statement is false, so `smt` won't be able to prove it.
-Running this prints the following (but does not fail).
+This statement is clearly false, so `smt` won't be able to prove it.
+Running `fail smt()` will not fail, and the following is printed.
 
 ```
 + The following error has been ignored:
@@ -121,14 +123,15 @@ Running this prints the following (but does not fail).
 | @cannot prove goal (strict)
 ```
 
-On the other hand, if the command following `fail` does not fail, `fail` will fail.
+Similarly, the command `by simplify` fails, so prepending it with `try` does not fail, 
+leaving the goal unchanged.
+<!-- Here, it is worth mentioning that `smt` failures are not caught by `try`. -->
+
 
 ```
-lemma bar (n : int) : 
-    n + 0 = n.
-proof.
-fail trivial.
-qed.
+lemma bar (n : int) : n + 0 = n.
 ```
 
-Here `trivial` solves the goal, so this command fails with the following error message: `this command is expected to fail`.
+This statememnt is trivially true, and can be solved with `by simplify`.
+So, `try by simplify` succeeds, while running `fail by simplify` fails with the following error 
+message: `this command is expected to fail`.
