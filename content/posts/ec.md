@@ -90,3 +90,45 @@ NOTE: in Xmss this works but in hint.ec it doesnt. the proof for have is simplif
        which yields 16%r = (2 ^ 4)%r. At this point using congr, we get 16 = 2 ^ 4. 
        I dont know why but smt cant solve this in hint.ec, but in xmss it can
 -->
+
+### `{/~}` Notation
+
+So for example `#{/~ x{1} = y{2} + 1}pre`.
+This can be used with the metavariables `pre` and `post`.
+
+<!-- Meter aqui um exemplo do MLKEM -->
+
+### `fail`
+
+`fail` is a used to assert that tactic that is supposed to fail does indeed fail.
+EasyCrypt's `fail` does the same thing as Coq's `Fail`.
+
+**Example**
+
+```
+lemma foo (n : int) : 
+  n + 1 = n.
+proof.
+fail smt().
+```
+
+This statement is false, so `smt` won't be able to prove it.
+Running this prints the following (but does not fail).
+
+```
++ The following error has been ignored:
+| 
+| @cannot prove goal (strict)
+```
+
+On the other hand, if the command following `fail` does not fail, `fail` will fail.
+
+```
+lemma bar (n : int) : 
+    n + 0 = n.
+proof.
+fail trivial.
+qed.
+```
+
+Here `trivial` solves the goal, so this command fails with the following error message: `this command is expected to fail`.
