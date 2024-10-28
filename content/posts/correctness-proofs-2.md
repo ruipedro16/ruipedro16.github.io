@@ -11,6 +11,8 @@ summary: ""
 tags: ['Jasmin', 'EasyCrypt']
 ---
 
+This specification is based on [RFC 8391 - XMSS: eXtended Merkle Signature Scheme](https://datatracker.ietf.org/doc/html/rfc8391)
+
 ## Subtypes 
 
 ![subtypes diagram](/posts/images/nbytes_diagram.png#center)
