@@ -16,6 +16,8 @@ This is the first post in a series on how to prove that Jasmin programs are corr
 a high-level specification written in EasyCrypt. The examples used in this posts are taken from the 
 correctness proof of the XMSS signature scheme, which is available 
 [here](https://github.com/ruipedro16/xmss-jasmin).
+There's also a [security proof of XMSS](https://github.com/MM45/FV-XMSS-EC)  written in EasyCrypt, 
+but we won't go over it. 
 
 ### Overview 
 
