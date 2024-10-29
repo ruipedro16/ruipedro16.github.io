@@ -1,6 +1,6 @@
 baseURL: 'https://ruipedro16.github.io/'
 languageCode: 'en-us'
-title: ''
+title: '~'
 
 theme: ["PaperMod"]
 buildDrafts: false
@@ -14,7 +14,6 @@ params:
   defaultTheme: dark
   disableThemeToggle: true
 
-
   homeInfoParams:
     Title: Rui Fernandes
     Content: Researcher at the Max Planck Institute for Security and Privacy (MPI-SP) 
@@ -26,3 +25,9 @@ params:
       url: "mailto:ruipedro16@protonmail.com"
     - name: linkedin
       url: "https://www.linkedin.com/in/ruipedro16/"
+
+menu:
+  main:
+    - name: Archive
+      url: archives
+      weight: 5
