@@ -1,0 +1,50 @@
+direction: down
+style: {
+  fill: transparent
+}
+
+root: {
+  label: "Root Hash"
+  shape: circle
+}
+
+left_hash: {
+  label: "Left Hash"
+  shape: circle
+}
+
+right: {
+  label: "Right Hash"
+  shape: circle
+}
+
+left_left: {
+  label: "Left-Left Hash"
+  shape: circle
+  width: 100
+}
+
+left_right: {
+  label: "Left-Right Hash"
+  shape: circle
+  width: 100
+}
+
+right_left: {
+  label: "Right-Left Hash"
+  shape: circle
+  width: 100
+}
+
+right_right: {
+  label: "Right-Right Hash"
+  shape: circle
+  width: 100
+}
+
+root -> left_hash
+root -> right
+left_hash -> left_left
+left_hash -> left_right
+right -> right_left
+right -> right_right
