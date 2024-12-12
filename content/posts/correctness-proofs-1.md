@@ -32,6 +32,10 @@ signature scheme.
 
 ![proof diagram](/posts/images/proof_diagram.png#center)
 
+We start with a high-level EasyCrypt specification and Jasmin implementation we wish to prove 
+equivalent to the specification. We then extract our Jasmin program to an equivalent EasyCrypt model, 
+which we prove equivalent to the specification using Probabilistic Relational Hoare Logic (pRHL).
+
 Probabilistic Relational Hoare Logic (pRHL) allows us to relate the execution of two probabilistic 
 programs \\(c_1\\) and \\(c_2\\):
 
