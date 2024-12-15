@@ -20,15 +20,29 @@ correctness proof of the XMSS signature scheme, which is available
 There's also a [security proof of XMSS](https://github.com/MM45/FV-XMSS-EC)  written in EasyCrypt, 
 but we won't go over it. 
 
-This will be split into four parts:
+This will be split into five parts: 
 
-- **Part 1 (this blog post)**: provides an overview on how to prove correctness of Jasmin programs with respect
-to an EasyCrypt specification.
+- **Part 1 (this blog post)**: provides an overview on how to prove correctness of Jasmin programs 
+with respect to an EasyCrypt specification.
 
-- **[Part 2: WOTS+](/posts/correctness-proofs-2)**: provides a step-by-step proof of WOTS+, a one-time
-signature scheme.
+- **[Part 2: WOTS+](/posts/correctness-proofs-2)**: provides a step-by-step proof of correctness of 
+a Jasmin implementation of  WOTS+, a one-time signature scheme.
 
-### Overview 
+- **[Part 3: Treehash](/posts/correctness-proofs-3)**: discusses the correctness proof of the Treehash 
+algorithm used in XMSS.
+
+- **[Part 4: Distributions](/posts/correctness-proofs-4)**: explores reasoning about probabilistic 
+distributions.
+
+- **[Part 5: Proving Constant-Time](/posts/correctness-proofs-5)**: covers how to prove that Jasmin 
+programs are constant-time.
+
+### Proof Overview 
+
+<!-- In this series, we will explore the process of proving the correctness of Jasmin programs with respect to a high-level  -->
+<!-- specification written in EasyCrypt. This involves several steps, starting from the high-level specification and moving  -->
+<!-- towards a formal proof of correctness. The goal is to ensure that the Jasmin implementation behaves as intended and  -->
+<!-- adheres to the specified properties. -->
 
 ![proof diagram](/posts/images/proof_diagram.png#center)
 
@@ -41,12 +55,22 @@ programs \\(c_1\\) and \\(c_2\\):
 
 $$\models c_1 \sim c_2 \  \colon \  P \implies Q, $$ where \\(P\\) and \\(Q\\) are relations over memories.
 
-In correctness proofs, it will usually be the case that \\(c_1\\) is an implementation and \\(c_2\\) is a high-level specification, or that \\(c_1\\) is an optimized implementation while \\(c_2\\) is a reference implementation.
+In correctness proofs, it will usually be the case that \\(c_1\\) is an implementation and \\(c_2\\) 
+is a high-level specification, or that \\(c_1\\) is an optimized implementation while \\(c_2\\) is a 
+reference implementation.
 
 In addition, we can also reason about different executions of the same program.
 For example, proving noninterference requires proving that two executions of the same program 
-whose initial values for the secret variables may differ results in two final states
-where the values of the public variables are equal.
+whose initial values for the secret variables may differ results in two final states where the values 
+of the public variables are equal.
 
 <!-- - **Extraction to EasyCrypt**: Two modes of extraction: *normal* (used to prove functional correctness) and *CT* (for
 proving that programs are constant-time). -->
+
+
+<!-- Correctness proofs are not necessarily from a spec to an implementation. /* melhorar esta frase */  -->
+<!-- 
+Alternatively, we can prove that an optimized implementation is equivalent to a reference implementation, 
+which has already been proved to be equivalent to the specification. As a result, by the transitivity of equivalence,
+this means that the optimized implementation is also equivalent to the specification.
+ -->
