@@ -16,6 +16,8 @@ tags: ['EasyCrypt']
 
 <!-- TODO: Meter uma introducao aqui -->
 
+<!-- https://dorahacksglobal.github.io/images/image/20221026-post-quantum-F9-tree-5.png -->
+
 ```ec
 lemma foo: floor (log2 16%r) = 4.
 ```
