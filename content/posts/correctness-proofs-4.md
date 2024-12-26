@@ -51,7 +51,7 @@ equiv sample_samplecat :
 ```
 
 Essentially, this lemma tells us that sample \\(n_1\\) bytes, followed by sampling
-\\(n_2\\) bytes is the same as sampling \\(n_1 + n_2\\). In fact, this works for any 
+\\(n_2\\) bytes is the same as sampling \\(n_1 + n_2\\) bytes. In fact, this works for any 
 type `t` and distribution `d`, though we are only interested in byte strings.
 
 ### Proof itself
