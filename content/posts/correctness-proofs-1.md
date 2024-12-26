@@ -74,3 +74,12 @@ Alternatively, we can prove that an optimized implementation is equivalent to a 
 which has already been proved to be equivalent to the specification. As a result, by the transitivity of equivalence,
 this means that the optimized implementation is also equivalent to the specification.
  -->
+
+### Limitations
+
+The main limitation of this process is the large trusted code base. 
+Fisrt, the extraction to EasyCrypt is not verified, and EasyCrypt itself is also 
+not verified. 
+Additionally, our proof makes extensive use of SMT solvers.
+Finally, the specifications are manually written based on the RFC. 
+<!-- using machine-readable standards could address this issues. -->
