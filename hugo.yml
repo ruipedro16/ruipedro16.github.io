@@ -30,4 +30,10 @@ menu:
   main:
     - name: Archive
       url: archives
-      weight: 5
+      weight: 3
+    - name: "Software"
+      url: "/software/"
+      weight: 2
+    - name: "Publications"
+      url: "/pub/"
+      weight: 1
