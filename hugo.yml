@@ -30,4 +30,7 @@ menu:
   main:
     - name: Archive
       url: archives
-      weight: 5
+      weight: 2
+    - name: "Code"
+      url: "/code/"
+      weight: 1
