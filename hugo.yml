@@ -28,9 +28,6 @@ params:
 
 menu:
   main:
-    - name: Archive
-      url: archives
-      weight: 2
     - name: "Code"
       url: "/code/"
       weight: 1
