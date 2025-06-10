@@ -1,0 +1,39 @@
+// @ts-ignore
+import Scene from "../components/Scene";
+
+import Layout from "../Layout";
+
+const Homepage = () => {
+  return (
+    <Layout>
+      <p>
+        Cryptography Engineer at the{" "}
+        <a
+          href="https://www.mpi-sp.org/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Max-Planck Institute for Security and Privacy
+        </a>{" "}
+        working on formally verified post-quantum cryptographic implementations
+        as part of the{" "}
+        <a
+          href="https://formosa-crypto.org/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Formosa Crypto
+        </a>{" "}
+        project.
+      </p>
+
+      <br />
+      <br />
+      <br />
+      <br />
+      <Scene />
+    </Layout>
+  );
+};
+
+export default Homepage;
