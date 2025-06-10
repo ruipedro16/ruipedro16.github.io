@@ -58,7 +58,7 @@ function Box() {
 const Scene = () => {
   return (
     <Canvas
-      style={{ height: "300px", width: "100%" }}
+      style={{ height: "500px", width: "100%" }}
       camera={{ position: [0, 5, 100], fov: 55, near: 1, far: 20000 }}
     >
       <pointLight decay={0} position={[100, 100, 100]} />

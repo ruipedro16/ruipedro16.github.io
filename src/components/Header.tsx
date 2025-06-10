@@ -5,7 +5,7 @@ interface Page {
 
 interface Props {
   site_title: string;
-  header_pages: Page[];
+  header_pages?: Page[];
 }
 
 const Header = ({ site_title, header_pages }: Props) => {
@@ -28,14 +28,15 @@ const Header = ({ site_title, header_pages }: Props) => {
           </label>
 
           <div className="trigger">
-            {header_pages.map(
-              (page, index) =>
-                page.title && (
-                  <a key={index} className="page-link" href={page.path}>
-                    {page.title}
-                  </a>
-                )
-            )}
+            {header_pages &&
+              header_pages.map(
+                (page, index) =>
+                  page.title && (
+                    <a key={index} className="page-link" href={page.path}>
+                      {page.title}
+                    </a>
+                  )
+              )}
           </div>
         </nav>
       </div>

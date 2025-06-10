@@ -13,12 +13,12 @@ const Layout = (props: Props) => {
     <>
       <Header
         site_title="Rui Fernandes"
-        header_pages={[
+        /* header_pages={[
           {
             title: "Code",
             path: "/code",
           },
-        ]}
+        ]} */
       />
 
       <main className="page-content" aria-label="Content">
