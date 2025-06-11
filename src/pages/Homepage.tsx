@@ -8,6 +8,7 @@ const Homepage = () => {
     <Layout>
       <p>
         Cryptography Engineer at the{" "}
+        {/* TODO: Make sure the link is not broken */}
         <a
           href="https://www.mpi-sp.org/"
           target="_blank"
@@ -16,7 +17,7 @@ const Homepage = () => {
           Max-Planck Institute for Security and Privacy
         </a>{" "}
         working on formally verified post-quantum cryptographic implementations
-        as part of the{" "}
+        as part of the {/* TODO: Make sure the link is not broken */}
         <a
           href="https://formosa-crypto.org/"
           target="_blank"
