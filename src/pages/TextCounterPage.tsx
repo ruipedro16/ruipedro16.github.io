@@ -8,8 +8,7 @@ interface Props {
 }
 
 const TextCounterPage = ({ text = "Count words" }: Props) => {
-  const [value, setValue] =
-    useState(text); /* Obs: text is immutable so we will use value */
+  const [value, setValue] = useState(text);
 
   const onTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setValue(e.target.value);
