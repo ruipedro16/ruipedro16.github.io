@@ -11,7 +11,7 @@ permissions:
   
 jobs:
   npm-audit-check:
-    name: Fail if `npm audit fix` would change anything
+    name: Run `npm audit fix --dry-run`
     runs-on: ubuntu-latest
 
     steps:
