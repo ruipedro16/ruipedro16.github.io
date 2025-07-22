@@ -7,9 +7,11 @@ import "./styles/minima.scss";
 import NotFoundPage from "./pages/NotFoundPage.tsx";
 import Homepage from "./pages/Homepage.tsx";
 import CodePage from "./pages/CodePage.tsx";
+import TextCounterPage from "./pages/TextCounterPage.tsx";
 
 const router = createHashRouter([
   { path: "/", element: <Homepage /> },
+  { path: "/text", element: <TextCounterPage /> },
   {
     path: "/code",
     element: (
