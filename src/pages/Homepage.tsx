@@ -6,7 +6,7 @@ import Layout from "../Layout";
 const Homepage = () => {
   return (
     <Layout>
-      <span style={{ textDecoration: 'overline' }}>
+      <span style={{ textDecoration: 'line-through' }}>
       <p>
         Cryptography Engineer at the{" "}
         {/* TODO: Make sure the link is not broken */}
