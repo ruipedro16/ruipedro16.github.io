@@ -6,6 +6,7 @@ import Layout from "../Layout";
 const Homepage = () => {
   return (
     <Layout>
+      <span style={{ textDecoration: 'overline' }}>
       <p>
         Cryptography Engineer at the{" "}
         {/* TODO: Make sure the link is not broken */}
@@ -26,7 +27,7 @@ const Homepage = () => {
           Formosa Crypto
         </a>{" "}
         project.
-      </p>
+      </p></span>
 
       <ul>
         <li>

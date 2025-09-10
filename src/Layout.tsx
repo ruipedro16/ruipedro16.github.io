@@ -36,7 +36,7 @@ const Layout = (props: Props) => {
 
       <Footer
         site_author="Rui Fernandes"
-        site_description="Cryptography Engineer at the Max Planck Institute for Security and Privacy."
+        site_description=""/* "Cryptography Engineer at the Max Planck Institute for Security and Privacy." */
         email="ruipedro16@protonmail.com"
       />
     </>
