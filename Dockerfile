@@ -1,6 +1,6 @@
 FROM ruby:3.4-slim-bookworm AS builder
 
-RUN apt-get update -qq && apt-get install -y nodejs build-essential
+RUN apt-get update -qq && apt-get install -y build-essential
 
 WORKDIR /app
 
