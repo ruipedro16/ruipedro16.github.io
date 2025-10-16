@@ -1,0 +1,26 @@
+name: Check URLs
+
+on:
+  push:
+    branches:
+      - "**"
+
+jobs:
+  check_urls:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r scripts/requirements.txt
+
+      - name: Run check_links
+        run: python3 scripts/check_links.py

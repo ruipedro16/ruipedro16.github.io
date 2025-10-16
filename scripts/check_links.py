@@ -1,0 +1,72 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+import sys
+import re
+
+from pathlib import Path
+
+try:
+    import requests
+except ModuleNotFoundError:
+    sys.stderr.write("The 'requests' library is not installed.")
+    sys.exit(1)
+
+VERBOSE = True
+
+if VERBOSE:
+    import pprint
+
+
+def is_url_reachable(url: str, timeout=5) -> bool:
+    try:
+        response = requests.head(url, allow_redirects=True, timeout=timeout)
+        return response.status_code == 200
+    except requests.RequestException:
+        return False
+
+
+def extract_urls(text: str) -> list[str]:
+    url_pattern = r"https?://[^\s\)\]\}\>,\"'`]+"
+    return re.findall(url_pattern, text)
+
+
+if len(sys.argv) < 2:
+    # if no files are provided, check the default ones
+    SCRIPT_DIR = Path(__file__).resolve().parent
+    input_files: list[str] = [
+        (SCRIPT_DIR / "../code.markdown").resolve(),
+        (SCRIPT_DIR / "../index.markdown").resolve(),
+    ]
+else:
+    input_files: list[str] = sys.argv[1:]
+
+urls: list[str] = []
+
+for file in input_files:
+    path = Path(file)
+
+    if not path.is_file():
+        sys.stderr.write(f"Warning: {path} does not exist or is not a file.\n")
+        sys.exit(1)
+
+    with open(file, "r", encoding="utf-8") as file:
+        text = file.read()
+
+    urls.extend(extract_urls(text))
+
+if VERBOSE:
+    pprint.pprint(urls)
+
+broken_urls = []
+
+for url in urls:
+    if is_url_reachable(url):
+        if VERBOSE:
+            print(f"\033[92m[OK]\033[0m {url}")
+    else:
+        if VERBOSE:
+            print(f"\033[91m[BROKEN]\033[0m {url}")
+        broken_urls.append(url)
+
+sys.exit(len(broken_urls))
