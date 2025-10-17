@@ -62,7 +62,7 @@ for file in input_files:
     path = Path(file)
 
     if not path.is_file():
-        sys.stderr.write(f"Warning: {path} does not exist or is not a file.\n")
+        sys.stderr.write(f"{path} does not exist or is not a file.\n")
         sys.exit(1)
 
     with open(file, "r", encoding="utf-8") as file:
