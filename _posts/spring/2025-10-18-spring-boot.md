@@ -1,13 +1,13 @@
 ---
 layout: post
 title: Spring Boot
-date: '2025-10-17 23:16:45 +0100'
+date: '2025-10-18 19:40:52 +0100'
 visible: false
 ---
 
 - Spring Boot taken as "opinionated" view of the Spring platform and 3rd-party
 libraries.
-- Hnadles most low-level, *predictable*  set-up.
+- Handles most low-level, *predictable*  set-up.
 
 ### Dependency Management
 
@@ -27,6 +27,18 @@ yourself -- find the correct version from the starter.
 </dependencies>
 ```
 
-### Auto-Configuration
+### Auto-Configuration & @EnableAutoConfiguration
+
+- `@SpringBootConfiguration` extends `@Configuration`.
 
 ### Integration Testing
+
+### Logging
+
+- Add the following in `application.properties`:
+
+```
+logging.level.root=WARN
+logging.level.org.springframework.web=DEBUG
+logging.level.org.hibernate=ERROR
+```
