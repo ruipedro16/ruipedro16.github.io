@@ -52,6 +52,7 @@ if len(sys.argv) < 2:
     input_files: list[str] = [
         (SCRIPT_DIR / "../code.markdown").resolve(),
         (SCRIPT_DIR / "../index.markdown").resolve(),
+        (SCRIPT_DIR / "../_posts/spring/2025-10-17-jdbc-template.md").resolve(),
         (SCRIPT_DIR / "../_posts/spring/2025-10-18-spring-boot.md").resolve(),
     ]
 else:

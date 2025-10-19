@@ -156,7 +156,8 @@ spring.sql.init.schema-locations:classpath:rewards/schema.sql
 spring.sql.init.data-locations:classpath:rewards/data.sql
 ```
 
-Instead, we can use the YAML format:
+Instead, we can use the YAML format (see  [this](https://mageddo.com/tools/yaml-converter)
+to convert between properties and YAML format):
 
 ```yaml
 logging:
