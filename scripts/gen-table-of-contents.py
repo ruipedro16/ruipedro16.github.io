@@ -5,6 +5,7 @@ import os
 import sys
 
 import pprint
+import re
 
 VERBOSE = False
 
@@ -39,7 +40,12 @@ if not os.path.isfile(filename):
     sys.exit(1)
 
 with open(filename, "r", encoding="utf-8") as f:
-    lines = f.readlines()
+    text = f.read()
+
+    # remove content between fenced code blocks (this keep the fences and language tags btw)
+    text = re.sub(r"(```[^\n]*\n)(.*?)(```)", r"\1\3", text, flags=re.DOTALL)
+    lines = text.splitlines()
+
 
 entries = [line.strip() for line in lines if line.strip().startswith("#")]
 
@@ -53,7 +59,9 @@ if VERBOSE:
 print("## Table of Contents", end="\n\n")
 for e in entries:
     preffix_length = len(e) - len(e.lstrip("#"))
+
     assert preffix_length >= OFFSET
+
     num_tabs = preffix_length - OFFSET
 
     section_title = e.lstrip("#").strip()

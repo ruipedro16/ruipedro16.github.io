@@ -5,6 +5,21 @@ date: '2025-10-18 19:40:52 +0100'
 visible: false
 ---
 
+## Table of Contents
+
+- [Dependency Management](#dependency-management)
+  - [Spring Boot Parent POM](#spring-boot-parent-pom)
+  - [Starter Dependencies](#starter-dependencies)
+- [Auto-Configuration & @EnableAutoConfiguration](#auto-configuration-&-@enableautoconfiguration)
+- [Packaging](#packaging)
+  - [Maven Plugin](#maven-plugin)
+- [Integration Testing](#integration-testing)
+- [application.properties](#applicationproperties)
+
+---
+
+<br/>
+
 - Spring Boot taken as "opinionated" view of the Spring platform and 3rd-party
 libraries.
 - Handles most low-level, *predictable*  set-up.
@@ -91,13 +106,23 @@ web application. We can create a fat JAR with Maven by running `mvn package`, or
 - We use the `@SpringBootTest` annotation instead of `@SpringJUnitConfig`.
 This annotation can take as argument the entry point to the application.
 
+We can ommit the `classes` parameter in `@SpringBootTest`. In that case:
+
+- `@SpringBootTest` searches for `@SpringBootConfiguration` class, and creates
+the application context for the test provided the configuration is in a package
+above the test.
+
+- Only one `@SpringBootConfiguration` is allowed in the hierarchy. (We usually
+only have one class annotated with `@SpringBootConfiguration`, which is the
+entrypoint to the application. )
+
 ```java
 @SpringBootApplication(scanBasePackages="transfers")
 public class Application {
     // Bean methods
 }
 
-// ----------------------------------------------------------------
+// ---------------------------------------------------------------- 
 
 @SpringBootTest(classes=Application.class)
 public class TransferServiceTests {
@@ -113,14 +138,38 @@ public class TransferServiceTests {
 }
 ```
 
-### Logging
+### application.properties
 
-- Add the following in `application.properties`:
+- Properties can be defined to supplement autoconfiguration or
+override autoconfiguration.
 
 ```
-
+# Set the log level for all modules 
 logging.level.root=WARN
+
 logging.level.org.springframework.web=DEBUG
+
 logging.level.org.hibernate=ERROR
 
+spring.sql.init.schema-locations:classpath:rewards/schema.sql
+
+spring.sql.init.data-locations:classpath:rewards/data.sql
+```
+
+Instead, we can use the YAML format:
+
+```yaml
+logging:
+  level:
+    org:
+      hibernate: ERROR
+      springframework:
+        web: DEBUG
+    root: WARN
+
+spring:
+  sql:
+    init:
+      schema-locations: classpath:rewards/schema.sql
+      data-locations: classpath:rewards/data.sql
 ```
