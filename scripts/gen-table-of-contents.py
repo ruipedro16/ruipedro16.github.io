@@ -26,6 +26,11 @@ def get_label(section_title: str) -> str:
         .replace(":", "")
         .replace(".", "")
         .replace(",", "")
+        .replace("@", "")
+        .replace("#", "")
+        .replace("&", "")
+        .replace("(", "")
+        .replace(")", "")
     )
 
 

@@ -10,11 +10,15 @@ visible: false
 - [Dependency Management](#dependency-management)
   - [Spring Boot Parent POM](#spring-boot-parent-pom)
   - [Starter Dependencies](#starter-dependencies)
-- [Auto-Configuration & @EnableAutoConfiguration](#auto-configuration-&-@enableautoconfiguration)
+- [Auto-Configuration & @EnableAutoConfiguration](#auto-configuration--enableautoconfiguration)
 - [Packaging](#packaging)
   - [Maven Plugin](#maven-plugin)
 - [Integration Testing](#integration-testing)
-- [application.properties](#applicationproperties)
+- [Application Properties](#application-properties)
+  - [Profile-specific configurations](#profile-specific-configurations)
+  - [Precedence](#precedence)
+- [@ConfigurationProperties](#configurationproperties)
+- [More on Autoconfiguration](#more-on-autoconfiguration)
 
 ---
 
@@ -270,3 +274,34 @@ public class ConnectionSettings {
     // ...
 }
 ```
+
+<!-- TODO: Talk about relaxed binding -->
+
+### More on Autoconfiguration
+
+Spring-provided auto-configuration classes:
+
+- `@Configuration` classes with conditions
+- We can create our own custom auto-configuration classes
+
+- Conditions include
+  - Do classpath cointents include specific classes?
+  - Are some properties set?
+  - Are some beans already configured (or not configured)?
+
+```java
+// Create JdbcTemplate bean only when DataSource bean already exists
+@Bean
+@ConditionalOnBean(DataSource.class)
+public JdbcTemplate jdbcTemplate(DataSource dataSource) {
+    return new JdbcTemplate(dataSource);
+}
+```
+
+Other include:
+<!-- TODO: Explain what each annotation means -->
+- `@Profile`
+- `@ConditionalOnMissingBean`
+- `@ConditionalOnClass`
+- `@ConditionalOnMissingClass`
+- `@ConditionalOnProperty`
