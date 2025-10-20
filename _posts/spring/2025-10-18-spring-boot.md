@@ -305,3 +305,39 @@ Other include:
 - `@ConditionalOnClass`
 - `@ConditionalOnMissingClass`
 - `@ConditionalOnProperty`
+
+### Overriding Configuration
+
+There are several options to override configuration:
+
+- Define properties
+- Define beans ourselves so Spring Boot won't
+- Explicitly disable some auto-configurations
+- Change dependencies or their versions
+
+#### Example: Define the JDBC driver
+
+- The `spring.datasource.driver-class-name` property is not required as it is
+autoconfigured typically. Defining it in `application.properties` overrides Spring
+Boot's default.
+
+```
+spring.datasource.url=jdbc:mysql://localhost/test
+spring.datasource.username=dbuser
+spring.datasource.password=dbpass
+spring.datasource.driver-class-name=com.mysql.jdbc.Driver
+spring.sql.init.schema-locations=classpath:/testdb/schema.sql
+spring.sql.init.data-locations=classpath:/testdb/data.sql
+```
+
+#### Example: Controlling Logging Level
+
+- Spring Boot allows us to easily control the verbosity of the application's logs
+by setting properties in the `application.properties` file. This works with most
+underlying logging frameworks (Logback (default), Log4J, Log4J2). By default,
+Spring Boot will use SLF4J.
+
+```
+logging.level.org.springframework=DEBUG
+logging.level.com.acme.your.code=INFO
+```
