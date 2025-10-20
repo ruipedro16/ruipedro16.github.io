@@ -73,6 +73,8 @@ for file in input_files:
 
     urls.extend(extract_urls(text))
 
+urls = [url for url in urls if not url.startswith("http://localhost")]
+
 if VERBOSE:
     pprint.pprint(urls)
 
