@@ -23,6 +23,7 @@ visible: false
 - Spring Boot taken as "opinionated" view of the Spring platform and 3rd-party
 libraries.
 - Handles most low-level, *predictable*  set-up.
+- **Dependency management** and **autoconfiguration**
 
 ### Dependency Management
 
@@ -32,7 +33,6 @@ yourself -- find the correct version from the starter.
 #### Spring Boot Parent POM
 
 - Defines versions of key dependencies
-- Sets up the Java version
 - Defines properties for dependencies, e.g. `${spring-framework.version}`
 
 ```xml
@@ -138,7 +138,7 @@ public class TransferServiceTests {
 }
 ```
 
-### application.properties
+### Application Properties
 
 - Properties can be defined to supplement autoconfiguration or
 override autoconfiguration.
@@ -157,7 +157,8 @@ spring.sql.init.data-locations:classpath:rewards/data.sql
 ```
 
 Instead, we can use the YAML format (see  [this](https://mageddo.com/tools/yaml-converter)
-to convert between properties and YAML format):
+to convert between properties and YAML format). In this case, the indentation
+must be 2 spaces:
 
 ```yaml
 logging:
@@ -173,4 +174,99 @@ spring:
     init:
       schema-locations: classpath:rewards/schema.sql
       data-locations: classpath:rewards/data.sql
+```
+
+#### Profile-specific configurations
+
+```yaml
+```
+
+#### Precedence
+
+Spring Boot selects properties in the following order (simplified):
+
+- Devtools settings
+- `@TestPropertySource` and `@SpringBootTest` properties
+- Command line arguments
+- `SPRING_APPLICATION_JSON` (inline JSON properties).
+- `ServletContext` / `ServletConfig` parameters.
+- JNDI attributes from `java:comp/env`
+- Java System properties
+- OS environment variables
+- Profile-specific application properties
+- Application properties / YAML
+- `@PropertySource` files
+- `SpringApplication.setDefaultProperties`
+
+### @ConfigurationProperties
+
+When you read multiple properties with the same prefix, using `@Value` repeatedly
+can become verbose and repetitive. In this case, we are always repeating
+the `rewards.client` preffix.
+
+```java
+@Configuration
+public class RewardsClientConfiguration {
+    @Value("${rewards.client.host}") 
+    String host;
+
+    @Value("${rewards.client.port}") 
+    int port;
+
+    @Value("${rewards.client.logdir}") 
+    String logdir;
+    
+    @Value("${rewards.client.timeout}") 
+    int timeout;
+
+    // ...
+}
+```
+
+This can be simplified using the `@ConfigurationProperties` annotation, which
+binds all properties with a common prefix to a single class.
+
+```java
+@ConfigurationProperties(prefix="rewards.client")
+public class ConnectionSettings {
+    private String host;
+    private int port;
+    private String logdir;
+    private int timeout;
+
+    // ...
+}
+```
+
+Note that this class (in this case `ConnectionSettings`) must be a Spring-managed
+bean that can be injected in other configuration classes. To do so, we wither use:
+
+- `@EnableConfigurationProperties` on the application class:
+
+```java
+@SpringBootApplication
+@EnableConfigurationProperties(ConnectionSettings.class)
+public class Application {
+    // ...
+}
+```
+
+- `@ConfigurationPropertiesScan` on the application class:
+
+```java
+@SpringBootApplication
+@ConfigurationPropertiesScan
+public class Application {
+    // ...
+}
+```
+
+- `@Component` on the properties class itself:
+
+```java
+@Component
+@ConfigurationProperties(prefix="rewards.client")
+public class ConnectionSettings {
+    // ...
+}
 ```
