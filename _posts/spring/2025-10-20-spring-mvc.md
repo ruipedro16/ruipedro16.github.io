@@ -7,12 +7,19 @@ visible: false
 
 ## Table of Contents
 
+- [Spreing Boot Autoconfiguration for Web Applications](#spreing-boot-autoconfiguration-for-web-applications)
 - [Embedded Servlet Container](#embedded-servlet-container)
 - [Starter Dependency](#starter-dependency)
 - [Request Processing Lifecycle](#request-processing-lifecycle)
 - [Controller Implementation](#controller-implementation)
-- [Arguments injected by Spring](#arguments-injected-by-spring)
-- [Extracting Request Parameters](#extracting-request-parameters)
+  - [Arguments injected by Spring](#arguments-injected-by-spring)
+  - [Extracting Request Parameters & @RequestParam](#extracting-request-parameters--requestparam)
+  - [URI Templates & @PathVariable](#uri-templates--pathvariable)
+  - [Method & Parameter Reflexion](#method--parameter-reflexion)
+  - [Method Signature Examples](#method-signature-examples)
+- [Message Converters](#message-converters)
+  - [ResponseEntity](#responseentity)
+- [Packaging: JAR & WAR configurations](#packaging-jar--war-configurations)
 
 ---
 
@@ -21,11 +28,20 @@ visible: false
 - **Web Servlet**: [Spring Web MVC](https://docs.spring.io/spring-framework/reference/web/webmvc.html)
 - **Web Reactive**: [Spring WebFlux](https://docs.spring.io/spring-framework/reference/web/webflux.html)
 
+### Spreing Boot Autoconfiguration for Web Applications
+
+- Sets up a `DispatcherServlet`
+- Sets up internal configuration to support controllers
+- Sets up default resource locations (images, CSS, JavaScript)
+- Sets up default Message Converters
+
 ### Embedded Servlet Container
 
 Spring Boot supports embedded servlet container.
 
 ### Starter Dependency
+
+- Ensures Spring Web and Spring MVC are on the classpath.
 
 ```xml
 <dependencies>
@@ -37,7 +53,28 @@ Spring Boot supports embedded servlet container.
 ```
 
 - `jackson`
-- Tomcat
+- Tomcat is the default web container. We can, for example, exclude Tomcat and
+use Jetty instead. Spring Boot will automatically detect Jetty and use it.
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-web</artifactId>
+    <exclusions>
+        <!-- Excludes Tomcat  -->
+        <exclusion>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+        </exclusion>
+    </exclusions>
+</dependency>
+
+<!-- Adds Jetty -->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-jetty</artifactId>
+</dependency>
+```
 
 ### Request Processing Lifecycle
 
@@ -189,3 +226,44 @@ public List<Supplier> getSuppliers(
     // ...
 }
 ```
+
+### Message Converters
+
+- **Problem**: <!-- TODO: FIXME: Minuto 17:48 de output-merged.mp4 deste capitulo -->
+
+- **Solution**: <!-- TODO: FIXME: Minuto 17:48 de output-merged.mp4 deste capitulo -->
+  - Autoconfigured by spring Boot (except protocol buffers)
+  - Decouples the processing logic from the conversion logic
+  - MediaType <!-- Minuto 19: Como e que o formato e definido -->
+
+#### ResponseEntity
+
+We can use `ResponseEntity` to manually set headers and control response content.
+
+- `ok()` sets the HTTP Status 200 OK.
+
+```java
+ResponseEntity<String> response =
+        ResponseEntity.ok()
+        .contentType(MediaType.TEXT_PLAIN)
+        .body("Hello Spring");
+```
+
+We can combine `ResponseEntity` with domain objects and return it from our
+controller methods:
+
+```java
+@GetMapping("/store/orders/{id}")
+public ResponseEntity<Order> getOrder (@PathVariable long id) {
+    Order order = orderService.find(id);
+
+    return ResponseEntity
+            .ok()
+            .lastModified(order.lastUpdated())
+            .body(order);
+}
+```
+
+### Packaging: JAR & WAR configurations
+
+<!-- Nao entendi mt bem isto, rever -->
