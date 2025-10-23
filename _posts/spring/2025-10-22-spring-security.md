@@ -91,3 +91,56 @@ Here is the content of the image converted into a markdown table that you can co
 | `UsernamePasswordAuthenticationFilter` | Puts **Authentication** into the `SecurityContext` on login request. |
 | `ExceptionTranslationFilter` | Converts Spring Security exceptions into HTTP response or redirect |
 | `AuthorizationFilter` | Authorizes web requests based on config attributes and authorities |
+
+### Spring Security Configuration
+
+- `UserDetailsManager`:
+  - `InMemoryUserDetailsManager`
+
+```java
+@Configuration
+public class SecurityConfig {
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) 
+                                              throws Exception {
+        // ...
+    }
+
+    @Bean
+    public InMemoryUserDetailsManager userDetailsService() {
+        // ...
+    }
+}
+```
+
+### Authorizing URLs
+
+- `*` acts as a wildcard within *a single* path segment.
+
+| Pattern | Matches | Does NOT Match | Explanation |
+| :--- | :--- | :--- | :--- |
+| `/api/*` | `/api/users` | `/api/v1/users` | Matches characters in the segment after `/api/`, but stops at the next path separator (`/`). |
+| `/files/*.txt` | `/files/report.txt` | `/files/2025/report.txt` | Matches any file name with a `.txt` extension directly under `/files/`. |
+
+- `**` acts as a recursive wildcard, matching zero or more entire path segments.
+It matches any characters, including the path separator `/`.
+
+| Pattern | Matches | Explanation |
+| :--- | :--- | :--- |
+| `/admin/**` | `/admin/` | Matches the `/admin/` path itself and everything nested under it. |
+| | `/admin/users/all` | Matches paths of any depth under `/admin/`. |
+| `/api/**/data` | `/api/v1/data` | Matches any number of nested directories between `/api/` and `/data`. |
+| | `/api/v2/stats/logs/data` | Matches even deeply nested paths. |
+
+```java
+@Bean
+public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    http.authorizeHttpRequests((authz) -> authz
+        // Match all URLs starting with /admin
+        // User must have ADMIN role
+        .requestMatchers("/admin/**").hasRole("ADMIN")
+        ...
+      );
+}
+```
