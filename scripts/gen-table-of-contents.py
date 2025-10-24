@@ -52,11 +52,11 @@ with open(filename, "r", encoding="utf-8") as f:
     lines = text.splitlines()
 
 
-entries = [line.strip() for line in lines if line.strip().startswith("#")]
-
-# Remove the table of contents if it is present
-if (x := "## Table of Contents") in entries:
-    entries.remove(x)
+entries = [
+    line.strip()
+    for line in lines
+    if line.strip().startswith("#") and line.strip() != "## Table of Contents"
+]
 
 if VERBOSE:
     pprint.pprint(entries)
@@ -64,6 +64,10 @@ if VERBOSE:
 print("## Table of Contents", end="\n\n")
 for e in entries:
     preffix_length = len(e) - len(e.lstrip("#"))
+
+    if not (preffix_length >= OFFSET):
+        print("Assertion failed for entry:", e)
+        print(f"Prefix length: {preffix_length}, Expected >= {OFFSET}", end="\n\n")
 
     assert preffix_length >= OFFSET
 
