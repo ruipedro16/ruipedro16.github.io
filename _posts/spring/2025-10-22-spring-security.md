@@ -11,6 +11,16 @@ visible: false
   - [Authentication](#authentication)
   - [Authorization](#authorization)
 - [Spring Security](#spring-security)
+  - [High-Level Architecture](#high-level-architecture)
+  - [Configuration](#configuration)
+  - [Spring Security Filter Chain](#spring-security-filter-chain)
+- [Spring Security Configuration](#spring-security-configuration)
+- [Authorization](#authorization)
+  - [Authorizing URLs](#authorizing-urls)
+  - [Bypassing Security](#bypassing-security)
+- [Authentication](#authentication)
+  - [TODO: FIXME: Video 3](#todo-fixme-video-3)
+  - [Method Security](#method-security)
 
 ---
 
@@ -25,7 +35,7 @@ visible: false
 
 - In order to know the princpal, we need to go through the *authentication* process.
 During this process, we determine if the principal is who he claims to be.
-- During *authroization*, we either grant or deny access to a particular secure
+- During *authorization*, we either grant or deny access to a particular secure
 resource. We do this using *resources*, which are permissions that are given to
 users. This is often done using *roles* -- **Role-based authorization**.
 
@@ -114,7 +124,9 @@ public class SecurityConfig {
 }
 ```
 
-### Authorizing URLs
+### Authorization
+
+#### Authorizing URLs
 
 - `*` acts as a wildcard within *a single* path segment.
 
@@ -131,7 +143,6 @@ It matches any characters, including the path separator `/`.
 | `/admin/**` | `/admin/` | Matches the `/admin/` path itself and everything nested under it. |
 | | `/admin/users/all` | Matches paths of any depth under `/admin/`. |
 | `/api/**/data` | `/api/v1/data` | Matches any number of nested directories between `/api/` and `/data`. |
-| | `/api/v2/stats/logs/data` | Matches even deeply nested paths. |
 
 ```java
 @Bean
@@ -140,7 +151,101 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         // Match all URLs starting with /admin
         // User must have ADMIN role
         .requestMatchers("/admin/**").hasRole("ADMIN")
-        ...
-      );
+        // ...
+    );
+
+    return http.build();
 }
 ```
+
+- Spring Security processes the requests against these rules sequentially, and it applies the first match it finds.
+  - **Put specific matches first**: This ensures that a request is checked against
+  the narrowest, most restrictive security requirement before falling through to
+  broader, more permissive rules (like `permitAll()`) or the final catch-all
+  (`anyRequest().authenticated()`).
+
+```java
+@Configuration
+public class SecurityConfig {
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) 
+                                            throws Exception {
+        http.authorizeHttpRequests((authz) -> authz
+            // Public access for signup (no authentication needed)
+            .requestMatchers("/signup", "/about").permitAll()
+
+            // Restricts HTTP PUT requests to paths /accounts/edit*,
+            // requiring the ADMIN role.
+            .requestMatchers(HttpMethod.PUT, "/accounts/edit*")
+              .hasRole("ADMIN")
+
+            // Grants access to all paths under /accounts/ and its 
+            // subdirectories to users with either USER or ADMIN roles.  
+            .requestMatchers("/accounts/**").hasAnyRole("USER", "ADMIN")
+
+            // All other requests not matched by the rules above
+            // must be authenticated
+            .anyRequest().authenticated()
+        );
+
+        return http.build();
+    }
+
+    // ...
+}
+```
+
+#### Bypassing Security
+
+- Some URLs do not need to be secured (e.g. static resources).
+- `permitAll()` allows open-access but the request is still processed by the
+Spring Security filter chain.
+- The URLs specified in `requestMatchers` pass straight through, without being
+checked by the Spring Security filter chain.
+
+```java
+@Bean
+public WebSecurityCustomizer webSecurityCustomizer() {
+    return (web) -> web.ignoring().requestMatchers("/ignore1", "/ignore2");
+}
+```
+
+### Authentication
+
+#### TODO: FIXME: Video 3
+
+#### Method Security
+
+- See documentation ([Expression-Based Access Control](https://docs.spring.io/spring-security/site/docs/4.2.x/reference/html/el-access.html))
+- Implemented at the service level.
+- Uses a Spring AOP Proxy.
+
+![](/assets/img/proxy.png)
+
+- `@EnableMethodSecurity`: Enables Spring's method-level security features.
+- `@PreAuthorize`: decides whether a method can actually be invoked or not.
+
+```java
+@EnableMethodSecurity
+public class ItemManager {
+    // Members may only find their own order items
+    @PreAuthorize("hasRole('MEMBER') && " +
+                  "#order.owner.name == principal.username")
+    public Item findItem(Order order, long itemNumber) {
+        // ...
+    }
+}
+```
+
+- `@PostAuthorize`: used to perform an access-control check after the method has
+been invoked. To access the return value from a method, we can use the built-in
+name `returnObject` in the expression.
+
+<!-- TODO: FIXME: Exemplo -->
+
+| Annotation | Type |
+| :--- | :--- |
+| **`@EnableMethodSecurity`** | Class-Level |
+| **`@PreAuthorize`** | Method-Level |
+| **`@PostAuthorize`** | Method-Level |
