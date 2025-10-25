@@ -56,6 +56,7 @@ if len(sys.argv) < 2:
         (SCRIPT_DIR / "../_posts/spring/2025-10-18-spring-boot.md").resolve(),
         (SCRIPT_DIR / "../_posts/spring/2025-10-20-spring-mvc.md").resolve(),
         (SCRIPT_DIR / "../_posts/spring/2025-10-22-spring-security.md").resolve(),
+        (SCRIPT_DIR / "../_posts/spring/2025-10-25-actuator.md").resolve(),
     ]
 else:
     input_files: list[str] = sys.argv[1:]

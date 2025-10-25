@@ -19,6 +19,7 @@ def get_label(section_title: str) -> str:
     if not section_title:
         raise ValueError("Empty title")
 
+    # TODO: Handle " and ' and ` and ç
     return (
         section_title.strip()
         .lower()
@@ -31,6 +32,9 @@ def get_label(section_title: str) -> str:
         .replace("&", "")
         .replace("(", "")
         .replace(")", "")
+        .replace('"', "")
+        .replace("'", "")
+        .replace("`", "")
     )
 
 
@@ -62,6 +66,7 @@ if VERBOSE:
     pprint.pprint(entries)
 
 print("## Table of Contents", end="\n\n")
+
 for e in entries:
     preffix_length = len(e) - len(e.lstrip("#"))
 
@@ -76,7 +81,7 @@ for e in entries:
     section_title = e.lstrip("#").strip()
 
     if num_tabs > 0:
-        print(f"{'\t' * num_tabs} - [{section_title}]({'#' + get_label(e.lstrip('#'))})")
+        print(f"{'  ' * num_tabs} - [{section_title}]({'#' + get_label(e.lstrip('#'))})")
     else:
         print(f"- [{section_title}]({'#' + get_label(e.lstrip('#'))})")
 
