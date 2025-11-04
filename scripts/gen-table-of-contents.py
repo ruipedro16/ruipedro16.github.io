@@ -72,6 +72,7 @@ for e in entries:
 
     if not (preffix_length >= OFFSET):
         print("Assertion failed for entry:", e)
+        print("# should start at level", OFFSET)
         print(f"Prefix length: {preffix_length}, Expected >= {OFFSET}", end="\n\n")
 
     assert preffix_length >= OFFSET

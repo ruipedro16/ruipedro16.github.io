@@ -5,6 +5,16 @@ date: '2025-10-17 23:16:45 +0100'
 visible: false
 ---
 
+## Table of Contents
+
+- [What are transactions](#what-are-transactions)
+- [Spring Transaction Management](#spring-transaction-management)
+  - [@Transactional Configuration](#transactional-configuration)
+
+---
+
+<br/>
+
 ### What are transactions
 
 A transaction is a sequence of one or more  operations (e.g. reading, writing,
@@ -46,8 +56,9 @@ programmatic approach.
   - The bean ID `transacionManager` is the recommended name.
 
 - We use `@Transactional` to define transaction boundaries.
-  - **NOTE** This annotation comes from Spring, not from
-    `javax.transaction.Transactional`.
+  - **NOTE** This annotation comes from
+  `org.springframework.transaction.annotation`, not from
+  `javax.transaction.Transactional`.
 
 ```java
 public class RewardNetworkImpl implements RewardNetwork {
@@ -92,8 +103,6 @@ public class RewardNetworkImpl implements RewardNetwork {
 }
 ```
 
-#### Declarative Transaction Management
-
 <!-- TODO: FIXME: Esta frase ta pessima -->
 - The target service is wrapped in a service and uses the `around` advice,
  meaning we do things before and after delegating to the target.
@@ -106,3 +115,28 @@ public class RewardNetworkImpl implements RewardNetwork {
   - Rollback if the methods throw a `RuntimeException`. This is the default
     behaviour, but it can be overriden.
     - Checked exception do not cause a rollback.
+
+### Transaction Propagation
+
+- What happens when a method annotated with `@Transactional` calls another
+transactional method?
+- Transaction propagation in Spring is a mechanism that dictates how transactional
+methods interact with a current transaction (if one exists) or how they should
+start a new one. It's defined by the `Propagation` parameter in the
+`@Transactional` annotation.
+
+<!-- Fiquei no minuto 14:29 -->
+
+### Overriding Rollback Rules
+
+```java
+public class RewardNetworkImpl implements RewardNetwork {
+    @Transactional(rollbackFor=MyCheckedException.class,
+                   noRollbackFor={JmxException.class, MailException.class})
+    public RewardConfirmation rewardAccountFor(Dining d) throws Exception {
+        // ...
+    }
+}
+```
+
+<!-- O Lab comeca no 20 -->

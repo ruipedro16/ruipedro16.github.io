@@ -21,7 +21,6 @@ visible: false
 - [Authentication](#authentication)
   - [TODO: FIXME: Video 3](#todo-fixme-video-3)
   - [Method Security](#method-security)
-
 ---
 
 <br/>
