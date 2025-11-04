@@ -19,7 +19,7 @@ visible: false
 
 ### Introduction
 
-- REST ( Representational State Transfer) is an *architectural style* that
+- REST (Representational State Transfer) is an *architectural style* that
 describes best practices to expose web services over HTTP.
 - **MOtivation**: We have more than web browsers as clients:
   - mobile applications,
@@ -67,6 +67,21 @@ HTTP Specification).
 - Support for redirect, caching, different representations, resource identification
 (through URIs)
 
+#### HTTP Statis code support
+
+- Success: 200 OK
+- Redirect: 30x
+- Client Error (Invalid URL): 404 Not Found
+- Server Error: 500 (UNhandled Exceptions)
+
+RESTful applications use many additional codes:
+
+- Created sucessfully: 201
+- Client Error: 400
+- HTTP method not supported: 405
+- Cannot generate response body in requested format: 406
+- Request body not supported: 415
+
 ### Spring support for REST
 
 - **Message Converters**: <!-- TODO: Definicoa -->
@@ -91,6 +106,7 @@ It is a *composed*`annotation:
 `@ResponseBody`. If we forget the `@ResponseBody` annotation, Spring MVC
 defaults to finding a View (and fails).
 - The converter handles rendering the response.
+- Status code 200
 
 ```java
 @Controller
@@ -133,3 +149,103 @@ public ResponseEntity<Order> getOrder(@PathVariable long id) {
 ```
 
 #### HTTP PUT
+
+- Return empty response, status code 204
+- We can use the `@ResponseStatus` annotation to return a status code other than 200.
+  - `void` methods annotatted with `@ResponseStatus` return a response with empty
+    body (no-content)
+
+```java
+@PutMapping("/store/orders/{id}")
+@ResponseStatus(HttpStatus.NO_CONTENT) // 204
+public void updateOrder(...) {
+    // ...
+}
+```
+
+- We use `@RequestBody` to extract data from incoming request data. The correct
+message converter is chosen automatically based on the `Content-Type` request
+header:
+
+```java
+@PutMapping("/store/orders/{id}")
+@ResponseStatus(HttpStatus.NO_CONTENT) // 204
+// Order object could be mapped from JSON, XML, etc
+public void updateOrder(@RequestBody Order updatedOrder,
+                        @PathVariable long id) {
+    orderManager.updateOrder(id, updatedOrder);
+}
+```
+
+#### HTTP POST
+
+- Return "created", status 201
+- Generate Location header (with the full URI of the resource) for the newly created resource
+  - We create the URI with `ServletUriComponentBuilder`:
+
+```java
+// Must be in a Controller method
+// Example: POST http://server/store/orders/12345/items
+
+URI location = ServletUriComponentsBuilder
+    .fromCurrentRequestUri()
+    .path("/{itemId}") // Note: leading /
+    .buildAndExpand("item A") // Note: space
+    .toUri();
+
+return ResponseEntity.created(location).build();
+
+// http://server/store/orders/12345/items/item%20A
+// Space converted to %20
+```
+
+```java
+@PostMapping("/store/orders/{id}/items")
+public ResponseEntity<Void> createItem
+    (@PathVariable long id, @RequestBody Item newItem) {
+
+    // Add the new item to the order
+    // Assume this call also set an item-id
+    orderService.findById(id).addItem(newItem);
+
+    // Build the location URI of the newly added item
+    URI location = ServletUriComponentsBuilder
+        .fromCurrentRequestUri()
+        .path("/{itemId}")
+        .buildAndExpand(newItem.getId())
+        .toUri();
+
+    // Explicitly create a 201 Created response with Location header set
+    return ResponseEntity.created(location).build();
+}
+```
+
+#### HTTP DELETE
+
+- Return empty response, status 204
+
+```java
+@DeleteMapping("/store/orders/{orderId}/items/{itemId}")
+@ResponseStatus(HttpStatus.NO_CONTENT) // 204
+public void deleteItem(@PathVariable long orderId,
+                       @PathVariable String itemId) {
+    orderService.findOrderById(orderId).deleteItem(itemId);
+}
+```
+
+#### RESTful Clients: RestTemplate
+
+- Supports all HTTP Methods
+
+## RestTemplate Method Mapping
+
+| HTTP Method | RestTemplate Method |
+| :--- | :--- |
+| **DELETE** | `delete(String url, Object... uriVariables)` |
+| **GET** | `getForObject(String url, Class<T> responseType, Object... uriVariables)` |
+| **HEAD** | `headForHeaders(String url, Object... uriVariables)` |
+| **OPTIONS** | `optionsForAllow(String url, Object... uriVariables)` |
+| **POST** | `postForLocation(String url, Object request, Object... uriVariables)` |
+| | `postForObject(String url, Object request, Class<T> responseType, Object... uriVariables)` |
+| **PUT** | `put(String url, Object request, Object... uriVariables)` |
+| **PATCH** | `patchForObject(String url, Object request, Class<T> responseType, Object... uriVariables)` |
