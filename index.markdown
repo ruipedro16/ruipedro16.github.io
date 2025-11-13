@@ -14,3 +14,5 @@ where I wrote my Master’s thesis on
 [*Speculative Execution Resilient Cryptography*](https://repositorio-aberto.up.pt/bitstream/10216/152745/2/641114.pdf).
 
 - [CV](assets/cv.pdf) (last updated on Oct 6, 2025)
+
+<br/><br/><br/>
