@@ -2,10 +2,6 @@
 layout: home
 ---
 
-
-> [!NOTE]
-> fooo
-
 ~~Currently, I'm a Cryptography Engineer at the 
 [Max-Planck Institute for Security and Privacy](https://www.mpi-sp.org/) 
 working on formally verified post-quantum cryptographic implementations as part of the 

@@ -9,11 +9,44 @@ visible: false
 
 #### Question 02 - How do you configure a DataSource in Spring? Which bean is very useful for development/test databases?
 
+- Have the `DataSource` bean
+
+- `EmbdeddedDataBaseBuilder`: Useful for testing
+
 #### Question 03 - What is the Template design pattern and what is the JDBC template?
+
+- Encapsulate algorithm with its steps in such a way that
+- **NOTE:** See Strategy Design Pattern
+
+<!-- TODO: FIXME: Nao entendi o ultimo paragrafo dos slides -->
+
+<!-- TODO: Adicionar o construtor de JdbcTemplate que recebe uma dataSource -->
 
 #### Question 04 - What is a callback? What are the three JdbcTemplate callback interfaces that can be used with queries? What is each used for?
 
+- It used to be implemented (in C++) as a pointer to a function
+
+- **Jdbc Template Callbacks that can be used with queries:**
+  - The difference between `RowMapper` and `RowCallbackHandler` is the method signature -- `RowMapper<T>` returns `T`, while `RowCallbackHandler` returns `void`. In addition, `RowMapper` is stateless, while `RowCallbackHandler` is stateful.
+
+  - The difference between `ResultSetExtractor` and `RowMapper` and `RowCallbackHandler` is that `ResultSetExtractor` is for processing the entire `ResultSet` data, while `RowMapper` and `RowCallbackHandler` are used on a per-row basis:
+    - We should not call `ResultSet.next()` on `RowMapper` and  `RowCallbackHandler`
+    - We can call `ResultSet.next()` on `ResultSetExtractor` to move between rows.
+
 #### Question 05 - Can you execute a plain SQL statement with the JDBC template?
+
+Yes, JDBC Template allows execution of plain SQL statements with following methods:
+
+<!-- TODO: Adicionar a assinatura destes metodos -->
+<!-- TODO: FIXME: Meter aqui a tabela -->
+- `query`
+- `queryForList`
+- `queryForObject`
+- `queryForMap`
+- `queryForRowSet`
+- `execute`
+- `update`
+- `batchUpdate`
 
 #### Question 06 - When does the JDBC template acquire (and release) a connection, for every method called or once per template? Why?
 

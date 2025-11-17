@@ -7,12 +7,11 @@ github_username: ruipedro16
 
 theme: minima
 
-markdown: GFM 
+# markdown: GFM ==> Doesnt work 
 
 plugins:
   - jekyll-feed
-  - jekyll-gfm-admonitions
-#- jekyll-optional-front-matter
+  - jekyll-gfm-admonitions # http://github.com/Helveg/jekyll-gfm-admonitions
 
 exclude:
   - .jekyll-cache/
