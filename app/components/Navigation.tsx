@@ -9,8 +9,9 @@ export function Navigation() {
 
   const links = [
     { href: "/", label: "Home" },
-    { href: "/blog", label: "Blog" },
-    { href: "/code", label: "Code" },
+    /* TODO: */
+/*     { href: "/blog", label: "Blog" },
+ */    { href: "/code", label: "Code" },
   ];
 
   return (
