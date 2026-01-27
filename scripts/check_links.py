@@ -18,7 +18,7 @@ if VERBOSE:
     import pprint
 
 
-def is_url_reachable(url: str, timeout=5) -> bool:
+def is_url_reachable(url: str, timeout: int = 5) -> bool:
     try:
         response = requests.head(url, allow_redirects=True, timeout=timeout)
         return response.status_code == 200
@@ -33,13 +33,13 @@ def extract_urls(text: str) -> list[str]:
 
 if len(sys.argv) < 2:
     # if no files are provided, check the default ones
-    SCRIPT_DIR = Path(__file__).resolve().parent
-    input_files: list[str] = [
+    SCRIPT_DIR: Path = Path(__file__).resolve().parent
+    input_files: list[Path] = [
         (SCRIPT_DIR / "../code.markdown").resolve(),
         (SCRIPT_DIR / "../index.markdown").resolve(),
     ]
 else:
-    input_files: list[str] = sys.argv[1:]
+    input_files: list[Path] = [Path(arg) for arg in sys.argv[1:]]
 
 urls: list[str] = []
 
@@ -58,7 +58,7 @@ for file in input_files:
 if VERBOSE:
     pprint.pprint(urls)
 
-broken_urls = []
+broken_urls: list[str] = []
 
 for url in urls:
     if is_url_reachable(url):
